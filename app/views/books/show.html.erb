@@ -1,14 +1,31 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Title:</strong>
-  <%= @book.title %>
+<strong>Title:</strong>
+<%= @book.title %>
 </p>
 
 <p>
-  <strong>Author:</strong>
-  <%= @book.author %>
+<strong>Author:</strong>
+<%= @book.author %>
 </p>
+
+<%= form_tag charges_path do %>
+  <article>
+    <label class="amount">
+      <span>Price: $<%= @book.price/100 %></span>
+    </label>
+  </article>
+
+  <%= hidden_field_tag 'book_id', @book.id %>
+
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                                        data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+                                                        data-description=<%= @book.title %>
+                                                      data-amount=<%= @book.price %>
+                                                      data-locale="auto">
+  </script>
+<% end %>
 
 <%= link_to 'Edit', edit_book_path(@book) %> |
 <%= link_to 'Back', books_path %>
